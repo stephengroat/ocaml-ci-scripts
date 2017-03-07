@@ -61,12 +61,6 @@ install_on_linux () {
        exit 1 ;;
   esac
 
-  if ! grep -q "$ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*.list
-  then
-    sudo add-apt-repository --yes ppa:${ppa}
-    sudo apt-get update -qq
-  fi
-
   pkgs=
   for pkg in ocaml ocaml-base ocaml-native-compilers ocaml-compiler-libs\
   ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
@@ -83,6 +77,8 @@ install_on_linux () {
     fi
   done
   if [ ! -z $pkgs ]; then
+    sudo add-apt-repository --yes ppa:${ppa}
+    sudo apt-get update -qq
     sudo apt-get install -y $pkgs
   fi
 
