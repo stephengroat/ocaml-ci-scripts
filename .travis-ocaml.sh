@@ -62,6 +62,7 @@ install_on_linux () {
   esac
 
   if grep -q "$ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*.list
+  then
   else
     sudo add-apt-repository --yes ppa:${ppa}
     sudo apt-get update -qq
@@ -72,6 +73,7 @@ install_on_linux () {
   ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
   do
     if dpkg -l $(full_apt_version $pkg $OCAML_VERSION)
+    then
     else
       pkgs+=" "$(full_apt_version $pkg $OCAML_VERSION)
     fi
@@ -79,6 +81,7 @@ install_on_linux () {
   for pkg in jq ocaml
   do
     if dpkg -l $pkg
+    then
     else
       pkgs+=" "$pkg
     fi
@@ -86,6 +89,7 @@ install_on_linux () {
   if [ ! -z $pkgs ]
   then
     sudo apt-get install -y $pkgs
+  else
   fi
 
   TRUSTY="deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe"
