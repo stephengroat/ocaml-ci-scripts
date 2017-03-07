@@ -24,7 +24,6 @@ full_version () {
 }
 update_pkgs () {
   pkgs=" "$1
-  esac
 }
 
 set -uex
