@@ -78,7 +78,7 @@ install_on_linux () {
   do
     if ! dpkg -l $pkg | grep -Eq 'ii *'$pkg' *'$(full_version $pkg $OCAML_VERSION)
     then
-      pkgs+=" "$(full_apt_version $pkg $OCAML_VERSION)
+      pkgs+=" $(full_apt_version $pkg $OCAML_VERSION)"
     fi
   done
   for pkg in jq opam
