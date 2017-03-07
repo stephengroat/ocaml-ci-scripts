@@ -61,20 +61,32 @@ install_on_linux () {
        exit 1 ;;
   esac
 
-  sudo add-apt-repository --yes ppa:${ppa}
-  sudo apt-get update -qq
-  sudo apt-get install -y \
-     "$(full_apt_version ocaml $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-base $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-native-compilers $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-compiler-libs $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-interp $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-base-nox $OCAML_VERSION)" \
-     "$(full_apt_version ocaml-nox $OCAML_VERSION)" \
-     "$(full_apt_version camlp4 $OCAML_VERSION)" \
-     "$(full_apt_version camlp4-extra $OCAML_VERSION)" \
-     jq \
-     opam
+  if grep -q "$ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*.list
+  else
+    sudo add-apt-repository --yes ppa:${ppa}
+    sudo apt-get update -qq
+  fi
+
+  pkgs=
+  for pkg in ocaml ocaml-base ocaml-native-compilers ocaml-compiler-libs\
+  ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
+  do
+    if dpkg -l $(full_apt_version $pkg $OCAML_VERSION)
+    else
+      pkgs+=" "$(full_apt_version $pkg $OCAML_VERSION)
+    fi
+  done
+  for pkg in jq ocaml
+  do
+    if dpkg -l $pkg
+    else
+      pkgs+=" "$pkg
+    fi
+  done
+  if [ ! -z $pkgs ]
+  then
+    sudo apt-get install -y $pkgs
+  fi
 
   TRUSTY="deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe"
 
