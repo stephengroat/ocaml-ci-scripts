@@ -76,7 +76,7 @@ install_on_linux () {
       pkgs+=" "$(full_apt_version $pkg $OCAML_VERSION)
     fi
   done
-  for pkg in jq ocaml
+  for pkg in jq opam
   do
     if ! dpkg -l $pkg; then
       pkgs+=" "$pkg
