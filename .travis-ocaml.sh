@@ -11,6 +11,17 @@ full_apt_version () {
              | head -1
   esac
 }
+full_version () {
+  package=$1
+  version=$2
+  case "${version}" in
+      latest) echo -n "${package}" ;;
+      *) echo -n 
+         apt-cache show "$package" \
+             | sed -n "s/^Version: \(${version}\)/\1/p" \
+             | head -1
+  esac
+}
 
 set -uex
 
@@ -65,7 +76,7 @@ install_on_linux () {
   for pkg in ocaml ocaml-base ocaml-native-compilers ocaml-compiler-libs\
   ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
   do
-    if ! dpkg -l $(full_apt_version $pkg $OCAML_VERSION)
+    if ! dpkg -l $pkg | grep -Eq 'ii *'$pkg' *'$(full_version $pkg $OCAML_VERSION)
     then
       pkgs+=" "$(full_apt_version $pkg $OCAML_VERSION)
     fi
