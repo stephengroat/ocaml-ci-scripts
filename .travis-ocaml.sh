@@ -22,6 +22,10 @@ full_version () {
              | head -1
   esac
 }
+update_pkgs () {
+  pkgs=" "$1
+  esac
+}
 
 set -uex
 
@@ -78,13 +82,13 @@ install_on_linux () {
   do
     if ! dpkg -l $pkg | grep -Eq 'ii *'$pkg' *'$(full_version $pkg $OCAML_VERSION)
     then
-      pkgs+=" $(full_apt_version $pkg $OCAML_VERSION)"
+      $(update_pkgs " "$(full_apt_version $pkg $OCAML_VERSION))
     fi
   done
   for pkg in jq opam
   do
     if ! dpkg -l $pkg; then
-      pkgs+=" "$pkg
+      $(update_pkgs " "$pkg)
     fi
   done
   if [ ! -z $pkgs ]; then
