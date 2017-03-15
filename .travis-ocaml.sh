@@ -16,8 +16,7 @@ full_version () {
   version=$2
   case "${version}" in
       latest) echo -n "${package}" ;;
-      *) echo -n 
-         apt-cache show "$package" \
+      *) echo -n apt-cache show "$package" \
              | sed -n "s/^Version: \(${version}\)/\1/p" \
              | head -1
   esac
