@@ -82,7 +82,7 @@ install_on_linux () {
   done
   for pkg in jq opam
   do
-    if ! dpkg -l $pkg; then
+    if ! dpkg -l $pkg &> /dev/null; then
       pkgs="$pkg $pkgs"
     fi
   done
