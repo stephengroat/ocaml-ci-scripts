@@ -73,8 +73,7 @@ install_on_linux () {
   esac
 
   pkgs=
-  for pkg in ocaml ocaml-base ocaml-native-compilers ocaml-compiler-libs\
-  ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
+  for pkg in ocaml ocaml-base ocaml-native-compilers ocaml-compiler-libs ocaml-interp ocaml-base-nox ocaml-nox camlp4 camlp4-extra
   do
     if ! dpkg -l $pkg | grep -Eq 'ii *'$pkg' *'$(full_version $pkg $OCAML_VERSION)
     then
@@ -92,6 +91,8 @@ install_on_linux () {
     sudo apt-get update -qq
     sudo apt-get install -y $pkgs
   fi
+
+  exit 1
 
   TRUSTY="deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe"
 
